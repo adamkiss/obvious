@@ -5,36 +5,25 @@ function __obvious_prompt_git_is_touched --description 'Count untracked or uncom
     [ (count $untracked_or_uncommited) -gt 0 ]; and return 0; or return 1;
 end
 
+function __obvious_prompt_git_is_merging -a repo_root --description 'Simple check for MERGE_HEAD'
+    test -f $repo_root/.git/MERGE_HEAD; return $status
+end
+
 function __obvious_prompt_git_symbol -a symbol
     set -l color $argv[2..-1]
 
     echo (set_color $color)$symbol
 end
 
-
-function __obvious_prompt_git
-    # symbols / colors
-    set -l sym_merging (__obvious_prompt_git_symbol '⨉' red)
-    set -l sym_up (__obvious_prompt_git_symbol '↑' magenta)
-    set -l sym_down (__obvious_prompt_git_symbol '↓' magenta)
-    set -l symbols ''
-
-    set -l upstream_diff (
-        string split \t (
-            command git rev-list --count --left-right origin...HEAD 2>/dev/null
-        )
-    )
+function __obvious_prompt_git -a repo_root
+    set -l branch_name (git_branch_name)
 
     # branch name color
     set -l branch_color brblack
-    if [ (count $upstream_diff) -gt 0 ]; and [ $upstream_diff[1] -gt 0 -o $upstream_diff[2] -gt 0 ]
-        set branch_color magenta
-        if test $upstream_diff[1] -gt 0
-            set symbols $symbols (__obvious_prompt_git_symbol '⇣' $branch_color)
-        end
-        if test $upstream_diff[2] -gt 0
-            set symbols $symbols (__obvious_prompt_git_symbol '⇡' $branch_color)
-        end
+    set -l symbols (git_ahead '⇡' '⇣' '⇡⇣' '')
+    if string length $symbols -q
+        set branch_color cyan
+        set symbols (set_color $branch_color)$symbols
     end
     if __obvious_prompt_git_is_touched
         set branch_color red
@@ -44,9 +33,13 @@ function __obvious_prompt_git
         set branch_color green
         set symbols (__obvious_prompt_git_symbol '️+' $branch_color)$symbols
     end
+    if __obvious_prompt_git_is_merging $repo_root
+        set branch_color red
+        set branch_name 'M! '$branch_name
+    end
 
     # output
     set_color normal
-    [ $COLUMNS -gt 40 ]; and echo -n (set_color $branch_color)(git_branch_name)' '
+    [ $COLUMNS -gt 30 ]; and echo -n (set_color $branch_color)$branch_name' '
     test -n $symbols; and echo -n $symbols
 end

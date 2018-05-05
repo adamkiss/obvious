@@ -9,7 +9,9 @@ function fish_prompt --description 'Write out the prompt'
     set -q obvious_prompt_symbol; or set -l obvious_prompt_symbol '⚡️ '
 
     echo 
-    [ $COLUMNS -gt '60' ]; and echo -n (set_color $__obv_color_time)(date +"%H:%M")(__obvious_prompt_split)
+    if [ $COLUMNS -gt '60' ]
+        echo -n (set_color $__obv_color_time)(date +"%H:%M")(__obvious_prompt_split)
+    end
 
     if test -n "$SSH_CONNECTION"
         # User
@@ -31,17 +33,20 @@ function fish_prompt --description 'Write out the prompt'
     set_color $fish_color_cwd
     echo -n (__obvious_prompt_pwd)
 
+    set -l git_repo_root (git_repository_root)
     if git_is_repo
         echo -n (__obvious_prompt_split)
-        __obvious_prompt_git
+        __obvious_prompt_git $git_repo_root
     end
     
     echo # end first line
 
     if not test $last_status -eq 0
         set_color $fish_color_error
+        echo -n '👿 '
+    else
+        echo -n $obvious_prompt_symbol
     end
 
-    echo -n $obvious_prompt_symbol
     set_color normal
 end
