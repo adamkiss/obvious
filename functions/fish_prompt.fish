@@ -1,6 +1,6 @@
 function __obvious_prompt_split
     set -l split_symbol ' · '
-    if [ $COLUMNS -gt '60' ]; set split_symbol ' '; end
+    if [ $COLUMNS -lt '60' ]; set split_symbol ' '; end
 
     echo (set_color $__obv_color_split)$split_symbol
 end
@@ -11,6 +11,8 @@ function fish_prompt --description 'Write out the prompt'
     # Get configurable things or use default
     set -q obvious_prompt_symbol; or set -l obvious_prompt_symbol '⚡️ '
 
+    echo
+    
     if test -n "$SSH_CONNECTION"
         # User
         set_color -b 222 brblack
@@ -24,7 +26,6 @@ function fish_prompt --description 'Write out the prompt'
         echo -n (__obvious_prompt_split)
     end
 
-    echo 
     if [ $COLUMNS -gt '60' ]
         echo -n (set_color $__obv_color_time)(date +"%H:%M")(__obvious_prompt_split)
     end
