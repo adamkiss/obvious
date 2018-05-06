@@ -8,21 +8,22 @@ function fish_prompt --description 'Write out the prompt'
     # Get configurable things or use default
     set -q obvious_prompt_symbol; or set -l obvious_prompt_symbol '⚡️ '
 
-    echo 
-    if [ $COLUMNS -gt '60' ]
-        echo -n (set_color $__obv_color_time)(date +"%H:%M")(__obvious_prompt_split)
-    end
-
     if test -n "$SSH_CONNECTION"
         # User
-        set_color -b 666 000
+        set_color -b 222 brblack
         echo -n ' '(whoami)' @ '
 
         # Host
         set_color -o
         echo -n (hostname -s)' '
 
+        set_color normal
         echo -n (__obvious_prompt_split)
+    end
+
+    echo 
+    if [ $COLUMNS -gt '60' ]
+        echo -n (set_color $__obv_color_time)(date +"%H:%M")(__obvious_prompt_split)
     end
 
     # PWD
