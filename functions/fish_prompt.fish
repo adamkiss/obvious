@@ -1,5 +1,8 @@
 function __obvious_prompt_split
-    echo (set_color $__obv_color_split)' · '
+    set -l split_symbol ' · '
+    if [ $COLUMNS -gt '60' ]; set split_symbol ' '; end
+
+    echo (set_color $__obv_color_split)$split_symbol
 end
 
 function fish_prompt --description 'Write out the prompt'
