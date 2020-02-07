@@ -10,6 +10,7 @@ function fish_prompt --description 'Write out the prompt'
     
     # Get configurable things or use default
     set -q obvious_prompt_symbol; or set -l obvious_prompt_symbol '⚡️ '
+    set -q obvious_prompt_error_symbol; or set -l obvious_prompt_error_symbol '× '
 
     echo
     
@@ -44,7 +45,7 @@ function fish_prompt --description 'Write out the prompt'
 
     if not test $last_status -eq 0
         set_color $fish_color_error
-        echo -n '👿 '
+        echo -n $obvious_prompt_error_symbol
     else
         echo -n $obvious_prompt_symbol
     end
