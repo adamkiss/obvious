@@ -27,6 +27,15 @@ function fish_prompt --description 'Write out the prompt'
         echo -n (__obvious_prompt_split)
     end
 
+    # TEST FOR SCREEN
+    if test -n "$STY"
+        set_color -b 222 brblack
+        echo -n (string split -m 1 '.' $STY)[2]
+
+        set_color normal
+        echo -n (__obvious_prompt_split)
+    end
+
     if [ $COLUMNS -gt '60' ]
         echo -n (set_color $__obv_color_time)(date +"%H:%M")(__obvious_prompt_split)
     end
