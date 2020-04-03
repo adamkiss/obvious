@@ -13,4 +13,4 @@ fisher adamkiss/obvious
 ```
 
 [fisher]: https://github.com/jorgebucaran/fisher
-[obvious]: https://cloud.githubusercontent.com/assets/8317250/13661599/777665a2-e6d7-11e5-9078-eae115fa140a.png
+[obvious]: https://user-images.githubusercontent.com/481362/78352422-9439e880-75a8-11ea-8524-1413446753b9.png
