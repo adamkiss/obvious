@@ -49,7 +49,8 @@ function fish_prompt --description 'Write out the prompt'
         echo -n (__obvious_prompt_split)
         __obvious_prompt_git $git_repo_root
     end
-    
+
+    set_color normal
     echo # end first line
 
     if not test $last_status -eq 0
