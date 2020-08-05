@@ -9,7 +9,7 @@ function fish_prompt --description 'Write out the prompt'
     set -l last_status $status
     
     # Get configurable things or use default
-    set -q obvious_prompt_symbol; or set -l obvious_prompt_symbol '⚡️ '
+    set -q obvious_prompt_symbol; or set -l obvious_prompt_symbol '› '
     set -q obvious_prompt_error_symbol; or set -l obvious_prompt_error_symbol '× '
 
     echo
